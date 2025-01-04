@@ -1,6 +1,5 @@
 name: "New Recipe"
 description: "Add a new recipe via GitHub issue form."
-title: ""
 labels: []
 body:
   - type: input
@@ -31,6 +30,15 @@ body:
         - "Vegan"
         - "Gluten-Free"
         - "Low-Carb"
+    validations:
+      required: true
+
+  - type: input
+    id: portions
+    attributes:
+      label: Portions
+      description: "Provide the number of portions the ingredients below make."
+    validations:
       required: true
 
   - type: textarea
@@ -39,6 +47,7 @@ body:
       label: "Ingredients"
       description: "List all the ingredients needed for the recipe. Use one ingredient per line."
       placeholder: "- 2 cups of flour\n- 1 tsp of yeast\n- 1/2 tsp of salt"
+    validations:  
       required: true
 
   - type: textarea
@@ -47,4 +56,5 @@ body:
       label: "Steps"
       description: "Provide the step-by-step instructions for preparing the recipe."
       placeholder: "1. Combine the flour, yeast, and salt.\n2. Add water and knead the dough.\n3. Let the dough rise for 1 hour."
+    validations:  
       required: true
