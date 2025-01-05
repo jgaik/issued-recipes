@@ -34,7 +34,7 @@ body:
     attributes:
       label: Portions
       description: "Provide the number of portions the ingredients below make."
-      value: 1
+      value: "1"
     validations:
       required: true
 
