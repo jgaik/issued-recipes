@@ -38,18 +38,12 @@ body:
     validations:
       required: true
 
-  - type: input
-    id: variants
-    attributes:
-      label: Variants
-      description: "Provide comma-separated list of variants if more than one is described."
-
   - type: textarea
     id: ingredients
     attributes:
       label: "Ingredients"
       description: "List all the ingredients needed for the recipe. Use one ingredient per line."
-      placeholder: "- 2 cups of flour\n- 1 tsp of yeast\n- 1/2 tsp of salt"
+      placeholder: "- Flour: 2 cups\n- Dry yeast: 1 tsp\n- Salt: 0.5 tbs"
     validations:  
       required: true
 
