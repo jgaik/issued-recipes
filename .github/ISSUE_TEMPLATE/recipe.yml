@@ -25,11 +25,7 @@ body:
         - "Snack"
         - "Beverage"
         - "Sauce/Condiment"
-        - "Bread/Baked Goods"
-        - "Vegetarian"
-        - "Vegan"
-        - "Gluten-Free"
-        - "Low-Carb"
+        - "Bread/Dough"
     validations:
       required: true
 
@@ -38,8 +34,15 @@ body:
     attributes:
       label: Portions
       description: "Provide the number of portions the ingredients below make."
+      value: 1
     validations:
       required: true
+
+  - type: input
+    id: variants
+    attributes:
+      label: Variants
+      description: "Provide comma-separated list of variants if more than one is described."
 
   - type: textarea
     id: ingredients
