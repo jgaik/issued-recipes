@@ -50,7 +50,6 @@ body:
       label: Ingredients
       description: List all the ingredients needed for the recipe. Use one ingredient per line.
       placeholder: "- Flour: 2 cups\n- Dry yeast: 1 tsp\n- Salt: 0.5 tbs"
-      render: md
     validations:  
       required: true
 
@@ -59,7 +58,6 @@ body:
     attributes:
       label: Steps
       description: Provide the step-by-step instructions for preparing the recipe.
-      placeholder: "1. Combine the flour, yeast, and salt.\n 2. Add water and knead the dough.\n 3. Let the dough rise for 1 hour."
-      render: md
+      placeholder: "1. Combine the flour, yeast, and salt.\n2. Add water and knead the dough.\n3. Let the dough rise for 1 hour."
     validations:  
       required: true
