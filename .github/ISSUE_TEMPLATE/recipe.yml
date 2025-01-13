@@ -9,12 +9,6 @@ body:
       description: Provide a brief summary of the recipe.
       placeholder: e.g., A classic Italian pizza topped with fresh mozzarella and basil.
    
-  - type: textarea
-    id: picture
-    attributes:
-      label: Picture
-      description: Provide a picture of the finished dish.
-
   - type: dropdown
     id: category
     attributes:
@@ -61,3 +55,9 @@ body:
       placeholder: "1. Combine the flour, yeast, and salt.\n2. Add water and knead the dough.\n3. Let the dough rise for 1 hour."
     validations:  
       required: true
+
+  - type: textarea
+    id: picture
+    attributes:
+      label: Picture
+      description: Provide a picture of the finished dish.
