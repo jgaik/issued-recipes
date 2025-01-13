@@ -3,7 +3,7 @@ import react from "@vitejs/plugin-react";
 
 // https://vite.dev/config/
 export default defineConfig({
-  base: "/issued-recipes/",
+  base: "/issued-recipes",
   plugins: [react()],
   css: {
     preprocessorOptions: {
