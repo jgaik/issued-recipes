@@ -5,14 +5,14 @@ body:
   - type: input
     id: short_description
     attributes:
-      label: "Short Description"
-      description: "Provide a brief summary of the recipe."
-      placeholder: "e.g., A classic Italian pizza topped with fresh mozzarella and basil."
+      label: Short Description
+      description: Provide a brief summary of the recipe.
+      placeholder: e.g., A classic Italian pizza topped with fresh mozzarella and basil.
 
   - type: dropdown
     id: category
     attributes:
-      label: "Category"
+      label: Category
       description: "Select the category that best fits your recipe."
       options:
         - "Main Course"
@@ -33,7 +33,7 @@ body:
     id: portions
     attributes:
       label: Portions
-      description: "Provide the number of portions the ingredients below make."
+      description: Provide the number of portions the ingredients below make.
       value: "1"
     validations:
       required: true
@@ -41,17 +41,19 @@ body:
   - type: textarea
     id: ingredients
     attributes:
-      label: "Ingredients"
-      description: "List all the ingredients needed for the recipe. Use one ingredient per line."
-      placeholder: "- Flour: 2 cups\n- Dry yeast: 1 tsp\n- Salt: 0.5 tbs"
+      label: Ingredients
+      description: List all the ingredients needed for the recipe. Use one ingredient per line.
+      placeholder: - Flour: 2 cups\n- Dry yeast: 1 tsp\n- Salt: 0.5 tbs
+      render: md
     validations:  
       required: true
 
   - type: textarea
     id: steps
     attributes:
-      label: "Steps"
-      description: "Provide the step-by-step instructions for preparing the recipe."
-      placeholder: "1. Combine the flour, yeast, and salt.\n2. Add water and knead the dough.\n3. Let the dough rise for 1 hour."
+      label: Steps
+      description: Provide the step-by-step instructions for preparing the recipe.
+      placeholder: 1. Combine the flour, yeast, and salt.\n2. Add water and knead the dough.\n3. Let the dough rise for 1 hour.
+      render: md
     validations:  
       required: true
