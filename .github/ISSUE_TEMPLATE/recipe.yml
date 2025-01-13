@@ -43,7 +43,7 @@ body:
     attributes:
       label: Ingredients
       description: List all the ingredients needed for the recipe. Use one ingredient per line.
-      placeholder: - Flour: 2 cups\n- Dry yeast: 1 tsp\n- Salt: 0.5 tbs
+      placeholder: "- Flour: 2 cups\n- Dry yeast: 1 tsp\n- Salt: 0.5 tbs"
       render: md
     validations:  
       required: true
