@@ -1,6 +1,7 @@
 import React, { use } from "react";
-import { Link } from "react-router";
 import { getRecipes } from "../api";
+import { RecipeCard } from "./recipe-card";
+import "./recipe-list.scss";
 
 const recipesResource = getRecipes();
 
@@ -8,10 +9,10 @@ export const RecipesList: React.FC = () => {
   const recipes = use(recipesResource);
 
   return (
-    <ul>
+    <ul className="recipe-list">
       {recipes?.map((recipe) => (
         <li key={recipe.id}>
-          <Link to={`${recipe.id}`}>{recipe.title}</Link>
+          <RecipeCard {...recipe} />
         </li>
       ))}
     </ul>

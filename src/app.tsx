@@ -25,7 +25,7 @@ export const App: React.FC = () => {
       <Suspense fallback={"Loading"}>
         <Routes>
           <Route path="/" element={<RecipesList />} />
-          <Route path="/:id" element={<RecipeRoute />} />
+          <Route path="//:id" element={<RecipeRoute />} />
         </Routes>
       </Suspense>
     </NavigationBarLayout>

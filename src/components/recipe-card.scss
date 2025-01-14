@@ -1,0 +1,25 @@
+.recipe-card {
+  display: flex;
+  flex-direction: row-reverse;
+  cursor: pointer;
+  border: var(--yamori-border-width-small) solid var(--yamori-border-primary);
+  border-radius: var(--yamori-border-radius-medium);
+  padding: var(--yamori-spacing-medium);
+  column-gap: var(--yamori-spacing-large);
+
+  section {
+    flex-grow: 1;
+    height: fit-content;
+
+    a {
+      color: inherit;
+      text-decoration: unset;
+    }
+  }
+
+  img {
+    flex-shrink: 1;
+
+    aspect-ratio: 1 / 1;
+  }
+}

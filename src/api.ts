@@ -1,10 +1,6 @@
 import { request } from "@octokit/request";
 import { IssuedRecipe } from "./types";
-import {
-  assertNonNullable,
-  getNonNullable,
-  getTypedObjectKeys,
-} from "@yamori-shared/react-utilities";
+import { getNonNullable, Nullable } from "@yamori-shared/react-utilities";
 
 const COMMON_FETCH_PROPS = {
   owner: "jgaik",
@@ -17,38 +13,43 @@ type IssuedRecipeBodyInfo = Pick<
 >;
 
 function parseIssueBody(body: string): IssuedRecipeBodyInfo {
-  const regExpGenerators: Record<keyof IssuedRecipeBodyInfo, string> = {
-    description: "Short Description",
-    category: "Category",
-    portions: "Portions",
-    ingredients: "Ingredients",
-    steps: "Steps",
-    picture: "Picture",
-  };
-
   const checkResponse = (value: string) =>
     /_no response_/i.test(value) ? null : value;
 
-  const getRegExpString = (key: keyof IssuedRecipeBodyInfo) =>
-    `### ${regExpGenerators[key]}(?<${key}>.+)`;
+  const parsedBody = Object.fromEntries(
+    body.matchAll(/### (.+)/g).map((match) => {
+      const startIdx = match.index + match[0].length;
 
-  const regExpMatch = new RegExp(
-    getTypedObjectKeys(regExpGenerators).map(getRegExpString).join("") + "$",
-    "s"
-  ).exec(body);
+      let endIdx: Nullable<number> = body.indexOf("###", startIdx);
 
-  assertNonNullable(regExpMatch, "issue body regexp match");
+      if (endIdx === -1) endIdx = undefined;
 
-  const { description, category, portions, ingredients, steps, picture } =
-    getNonNullable(regExpMatch.groups, "matched groups");
+      return [match[1].toLowerCase(), body.slice(startIdx, endIdx).trim()];
+    })
+  );
 
   return {
-    description: checkResponse(description.trim()),
-    category: category.trim(),
-    portions: Number(portions),
-    ingredients: ingredients.trim().split(/[\r\n]+/),
-    steps: steps.trim().split(/[\r\n]+/),
-    picture: checkResponse(picture.trim())?.match(/\((.+)\)/)?.[1],
+    description: checkResponse(parsedBody.description),
+    category: parsedBody.category,
+    portions: Number(parsedBody.portions),
+    ingredients: parsedBody.ingredients.split(/[\r\n]+/).map((ingredient) => {
+      const { name, amount, unit } =
+        /^- *(?<name>[^:]+): *(?<amount>(?:[0-9]*[.])?[0-9]+) *(?<unit>[a-zA-Z]+)?$/.exec(
+          ingredient
+        )?.groups ?? {};
+
+      return {
+        name,
+        unit,
+        amount: Number(amount),
+      };
+    }),
+    steps: parsedBody.steps.split(/[\r\n]+/).map((step) => {
+      const { order, description } =
+        /^(?<order>\d). *(?<description>.+)$/.exec(step)?.groups ?? {};
+      return { order, description };
+    }),
+    picture: checkResponse(parsedBody.picture)?.match(/\((.+)\)/)?.[1],
   };
 }
 

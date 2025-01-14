@@ -3,12 +3,12 @@ description: "Add a new recipe via GitHub issue form."
 labels: []
 body:
   - type: input
-    id: short_description
+    id: description
     attributes:
-      label: Short Description
+      label: Description
       description: Provide a brief summary of the recipe.
       placeholder: e.g., A classic Italian pizza topped with fresh mozzarella and basil.
-   
+
   - type: dropdown
     id: category
     attributes:
@@ -44,7 +44,7 @@ body:
       label: Ingredients
       description: List all the ingredients needed for the recipe. Use one ingredient per line.
       placeholder: "- Flour: 2 cups\n- Dry yeast: 1 tsp\n- Salt: 0.5 tbs"
-    validations:  
+    validations:
       required: true
 
   - type: textarea
@@ -53,7 +53,7 @@ body:
       label: Steps
       description: Provide the step-by-step instructions for preparing the recipe.
       placeholder: "1. Combine the flour, yeast, and salt.\n2. Add water and knead the dough.\n3. Let the dough rise for 1 hour."
-    validations:  
+    validations:
       required: true
 
   - type: textarea
