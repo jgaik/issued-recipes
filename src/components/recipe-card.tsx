@@ -45,7 +45,7 @@ export const RecipeCard: React.FC<IssuedRecipe> = ({
         </h5>
         <p>{description}</p>
       </section>
-      {picture && <img ref={imgRef} src={picture} alt={title} />}
+      {/* {picture && <img ref={imgRef} src={picture} alt={title} />} */}
     </article>
   );
 };
