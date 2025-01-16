@@ -1,6 +1,6 @@
 import { request } from "@octokit/request";
 import { IssuedRecipe } from "./types";
-// import { getNonNullable, Nullable } from "@yamori-shared/react-utilities";
+import { getNonNullable, Nullable } from "@yamori-shared/react-utilities";
 
 const COMMON_FETCH_PROPS = {
   owner: "jgaik",
@@ -16,17 +16,18 @@ const COMMON_FETCH_PROPS = {
 //   const checkResponse = (value: string) =>
 //     /_no response_/i.test(value) ? null : value;
 
-//   const parsedBody = Object.fromEntries(
-//     body.matchAll(/### (.+)/g).map((match) => {
-//       const startIdx = match.index + match[0].length;
+const parsedBody = (body: string) =>
+  Object.fromEntries(
+    body.matchAll(/### (.+)/g).map((match) => {
+      const startIdx = match.index + match[0].length;
 
-//       let endIdx: Nullable<number> = body.indexOf("###", startIdx);
+      let endIdx: Nullable<number> = body.indexOf("###", startIdx);
 
-//       if (endIdx === -1) endIdx = undefined;
+      if (endIdx === -1) endIdx = undefined;
 
-//       return [match[1].toLowerCase(), body.slice(startIdx, endIdx).trim()];
-//     })
-//   );
+      return [match[1].toLowerCase(), body.slice(startIdx, endIdx).trim()];
+    })
+  );
 
 //   return {
 //     description: checkResponse(parsedBody.description),
@@ -58,6 +59,7 @@ function mapIssueToRecipe(issue: {
   title: string;
   body?: string | null;
 }): IssuedRecipe {
+  alert(parsedBody(getNonNullable(issue.body, "issue body")));
   return {
     id: issue.number,
     title: issue.title,
