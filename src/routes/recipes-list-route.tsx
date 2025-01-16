@@ -3,11 +3,11 @@ import { getRecipes } from "../api";
 import { RecipesList } from "../components";
 
 export const RecipesListRoute: React.FC = () => {
-  const recipesResource = getRecipes();
+  const recipes = getRecipes();
 
   return (
     <Suspense fallback={"Recipes loading"}>
-      <RecipesList recipesResource={recipesResource} />
+      <RecipesList recipesResource={recipes} />
     </Suspense>
   );
 };

@@ -6,7 +6,8 @@ import "./recipe-card.scss";
 export const RecipeCard: React.FC<IssuedRecipe> = ({
   id,
   title,
-  // description,
+  description,
+  picture,
 }) => {
   const linkRef = useRef<ComponentRef<typeof Link>>(null);
   const sectionRef = useRef<ComponentRef<"section">>(null);
@@ -42,9 +43,9 @@ export const RecipeCard: React.FC<IssuedRecipe> = ({
             {title}
           </Link>
         </h5>
-        {/* <p>{description}</p> */}
+        <p>{description}</p>
       </section>
-      {/* {picture && <img ref={imgRef} src={picture} alt={title} />} */}
+      {picture && <img ref={imgRef} src={picture} alt={title} />}
     </article>
   );
 };

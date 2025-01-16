@@ -1,69 +1,70 @@
 import { request } from "@octokit/request";
 import { IssuedRecipe } from "./types";
-import { getNonNullable } from "@yamori-shared/react-utilities";
+import { getNonNullable, Nullable } from "@yamori-shared/react-utilities";
 
 const COMMON_FETCH_PROPS = {
   owner: "jgaik",
   repo: "issued-recipes",
 };
 
-// type IssuedRecipeBodyInfo = Pick<
-//   IssuedRecipe,
-//   "description" | "category" | "portions" | "ingredients" | "steps" | "picture"
-// >;
+type IssuedRecipeBodyInfo = Pick<
+  IssuedRecipe,
+  "description" | "category" | "portions" | "ingredients" | "steps" | "picture"
+>;
 
-// function parseIssueBody(body: string): IssuedRecipeBodyInfo {
-//   const checkResponse = (value: string) =>
-//     /_no response_/i.test(value) ? null : value;
+function parseIssueBody(body: string): IssuedRecipeBodyInfo {
+  const checkResponse = (value: string) =>
+    /_no response_/i.test(value) ? null : value;
 
-const parsedBody = (body: string) =>
-  // Object.fromEntries(
-  body.match(/### (.+)/g);
-//   const startIdx = match.index + match[0].length;
+  const parsedBody = Object.fromEntries(
+    getNonNullable(body.match(/### (.+)/g), "body with ###").map((match) => {
+      const startIdx = body.indexOf(match) + match.length;
 
-//   let endIdx: Nullable<number> = body.indexOf("###", startIdx);
+      let endIdx: Nullable<number> = body.indexOf("###", startIdx);
 
-//   if (endIdx === -1) endIdx = undefined;
+      if (endIdx === -1) endIdx = undefined;
 
-//   return [match[1].toLowerCase(), body.slice(startIdx, endIdx).trim()];
-// });
-// );
+      return [
+        match.replace("### ", "").toLowerCase(),
+        body.slice(startIdx, endIdx).trim(),
+      ];
+    })
+  );
 
-//   return {
-//     description: checkResponse(parsedBody.description),
-//     category: parsedBody.category,
-//     portions: Number(parsedBody.portions),
-//     ingredients: parsedBody.ingredients.split(/[\r\n]+/).map((ingredient) => {
-//       const { name, amount, unit } =
-//         /^- *(?<name>[^:]+): *(?<amount>(?:[0-9]*[.])?[0-9]+) *(?<unit>[a-zA-Z]+)?$/.exec(
-//           ingredient
-//         )?.groups ?? {};
+  return {
+    description: checkResponse(parsedBody.description),
+    category: parsedBody.category,
+    portions: Number(parsedBody.portions),
+    ingredients: parsedBody.ingredients.split(/[\r\n]+/).map((ingredient) => {
+      const { name, amount, unit } =
+        /^- *(?<name>[^:]+): *(?<amount>(?:[0-9]*[.])?[0-9]+) *(?<unit>[a-zA-Z]+)?$/.exec(
+          ingredient
+        )?.groups ?? {};
 
-//       return {
-//         name,
-//         unit,
-//         amount: Number(amount),
-//       };
-//     }),
-//     steps: parsedBody.steps.split(/[\r\n]+/).map((step) => {
-//       const { order, description } =
-//         /^(?<order>\d). *(?<description>.+)$/.exec(step)?.groups ?? {};
-//       return { order, description };
-//     }),
-//     picture: checkResponse(parsedBody.picture)?.match(/\((.+)\)/)?.[1],
-//   };
-// }
+      return {
+        name,
+        unit,
+        amount: Number(amount),
+      };
+    }),
+    steps: parsedBody.steps.split(/[\r\n]+/).map((step) => {
+      const { order, description } =
+        /^(?<order>\d). *(?<description>.+)$/.exec(step)?.groups ?? {};
+      return { order, description };
+    }),
+    picture: checkResponse(parsedBody.picture)?.match(/\((.+)\)/)?.[1],
+  };
+}
 
 function mapIssueToRecipe(issue: {
   number: number;
   title: string;
   body?: string | null;
 }): IssuedRecipe {
-  alert(parsedBody(getNonNullable(issue.body, "issue body")));
   return {
     id: issue.number,
     title: issue.title,
-    // ...parseIssueBody(getNonNullable(issue.body, "issue body")),
+    ...parseIssueBody(getNonNullable(issue.body, "issue body")),
   };
 }
 
