@@ -1,10 +1,9 @@
-import React, { Suspense } from "react";
+import React from "react";
 import { NavigationBarLayout } from "@yamori-design/react-components";
 import { Route, Routes, useNavigate } from "react-router";
-import { RecipesList } from "./components";
-import { RecipeRoute } from "./routes";
-import "./app.scss";
+import { RecipeRoute, RecipesListRoute } from "./routes";
 import { ErrorBoundary } from "react-error-boundary";
+import "./app.scss";
 
 export const App: React.FC = () => {
   const navigate = useNavigate();
@@ -24,12 +23,10 @@ export const App: React.FC = () => {
       githubHref="https://github.com/jgaik/issued-recipes"
     >
       <ErrorBoundary onError={alert} fallback={"Error"}>
-        <Suspense fallback={"Loading"}>
-          <Routes>
-            <Route path="/" element={<RecipesList />} />
-            <Route path="//:id" element={<RecipeRoute />} />
-          </Routes>
-        </Suspense>
+        <Routes>
+          <Route path="/" element={<RecipesListRoute />} />
+          <Route path="/:id" element={<RecipeRoute />} />
+        </Routes>
       </ErrorBoundary>
     </NavigationBarLayout>
   );

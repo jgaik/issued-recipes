@@ -1,11 +1,15 @@
 import React, { use } from "react";
-import { getRecipes } from "../api";
 import { RecipeCard } from "./recipe-card";
+import { IssuedRecipe } from "../types";
 import "./recipe-list.scss";
 
-const recipesResource = getRecipes();
+type RecipesListProps = {
+  recipesResource: Promise<IssuedRecipe[]>;
+};
 
-export const RecipesList: React.FC = () => {
+export const RecipesList: React.FC<RecipesListProps> = ({
+  recipesResource,
+}) => {
   const recipes = use(recipesResource);
 
   return (
