@@ -17,17 +17,17 @@ const COMMON_FETCH_PROPS = {
 //     /_no response_/i.test(value) ? null : value;
 
 const parsedBody = (body: string) =>
-  Object.fromEntries(
-    body.matchAll(/### (.+)/g).map((match) => {
-      const startIdx = match.index + match[0].length;
+  // Object.fromEntries(
+  body.matchAll(/### (.+)/g).map((match) => {
+    const startIdx = match.index + match[0].length;
 
-      let endIdx: Nullable<number> = body.indexOf("###", startIdx);
+    let endIdx: Nullable<number> = body.indexOf("###", startIdx);
 
-      if (endIdx === -1) endIdx = undefined;
+    if (endIdx === -1) endIdx = undefined;
 
-      return [match[1].toLowerCase(), body.slice(startIdx, endIdx).trim()];
-    })
-  );
+    return [match[1].toLowerCase(), body.slice(startIdx, endIdx).trim()];
+  });
+// );
 
 //   return {
 //     description: checkResponse(parsedBody.description),
