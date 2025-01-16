@@ -4,6 +4,7 @@ import { Route, Routes, useNavigate } from "react-router";
 import { RecipesList } from "./components";
 import { RecipeRoute } from "./routes";
 import "./app.scss";
+import { ErrorBoundary } from "react-error-boundary";
 
 export const App: React.FC = () => {
   const navigate = useNavigate();
@@ -22,12 +23,14 @@ export const App: React.FC = () => {
       ]}
       githubHref="https://github.com/jgaik/issued-recipes"
     >
-      <Suspense fallback={"Loading"}>
-        <Routes>
-          <Route path="/" element={<RecipesList />} />
-          <Route path="//:id" element={<RecipeRoute />} />
-        </Routes>
-      </Suspense>
+      <ErrorBoundary onError={alert} fallback={"Error"}>
+        <Suspense fallback={"Loading"}>
+          <Routes>
+            <Route path="/" element={<RecipesList />} />
+            <Route path="//:id" element={<RecipeRoute />} />
+          </Routes>
+        </Suspense>
+      </ErrorBoundary>
     </NavigationBarLayout>
   );
 };
