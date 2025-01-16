@@ -7,7 +7,6 @@ export const RecipeCard: React.FC<IssuedRecipe> = ({
   id,
   title,
   description,
-  picture,
 }) => {
   const linkRef = useRef<ComponentRef<typeof Link>>(null);
   const sectionRef = useRef<ComponentRef<"section">>(null);
