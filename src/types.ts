@@ -15,10 +15,10 @@ export type RecipeIngredient = {
 export type IssuedRecipe = {
   id: number;
   title: string;
-  description: Nullable<string>;
-  category: string;
-  portions: number;
-  ingredients: Array<RecipeIngredient>;
-  steps: Array<RecipeStep>;
-  picture: Nullable<string>;
+  // description: Nullable<string>;
+  // category: string;
+  // portions: number;
+  // ingredients: Array<RecipeIngredient>;
+  // steps: Array<RecipeStep>;
+  // picture: Nullable<string>;
 };
