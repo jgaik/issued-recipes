@@ -5,8 +5,8 @@
   "type": "module",
   "homepage": "https://jgaik.github.io/issued-recipes/",
   "scripts": {
-    "dev": "vite",
-    "build": "tsc -b && vite build --host",
+    "dev": "vite --host",
+    "build": "tsc -b && vite build",
     "lint": "eslint .",
     "preview": "vite preview"
   },
