@@ -6,7 +6,7 @@
   "homepage": "https://jgaik.github.io/issued-recipes/",
   "scripts": {
     "dev": "vite",
-    "build": "tsc -b && vite build",
+    "build": "tsc -b && vite build --host",
     "lint": "eslint .",
     "preview": "vite preview"
   },

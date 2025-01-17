@@ -2,9 +2,9 @@ import { Suspense } from "react";
 import { getRecipes } from "../api";
 import { RecipesList } from "../components";
 
-export const RecipesListRoute: React.FC = () => {
-  const recipes = getRecipes();
+const recipes = getRecipes();
 
+export const RecipesListRoute: React.FC = () => {
   return (
     <Suspense fallback={"Recipes loading"}>
       <RecipesList recipesResource={recipes} />
