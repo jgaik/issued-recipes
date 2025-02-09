@@ -1,8 +1,11 @@
-import { RecipesList } from "../components";
+import { RecipeFilter, RecipesList } from "../components";
 
 export const RecipesListRoute: React.FC = () => {
-  return [
-    <title key="title">Issued Recipes</title>,
-    <RecipesList key="recipes-list" />,
-  ];
+  return (
+    <div>
+      <title>Issued Recipes</title>
+      <RecipeFilter />
+      <RecipesList />
+    </div>
+  );
 };
