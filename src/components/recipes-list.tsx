@@ -1,16 +1,13 @@
-import React, { use } from "react";
+import React from "react";
 import { RecipeCard } from "./recipe-card";
-import { IssuedRecipe } from "../types";
+import { api } from "../api";
+import { Loading } from "@yamori-design/react-components";
 import "./recipe-list.scss";
 
-type RecipesListProps = {
-  recipesResource: Promise<IssuedRecipe[]>;
-};
+export const RecipesList: React.FC = () => {
+  const { data: recipes, isLoading } = api.useGetRecipesQuery();
 
-export const RecipesList: React.FC<RecipesListProps> = ({
-  recipesResource,
-}) => {
-  const recipes = use(recipesResource);
+  if (isLoading) return <Loading />;
 
   return (
     <ul className="recipe-list">

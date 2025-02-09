@@ -1,11 +1,10 @@
-import { request } from "@octokit/request";
-import { IssuedRecipe } from "./types";
+import { Octokit, RequestError } from "octokit";
+import { GitHubIssue, IssuedRecipe } from "./types";
 import { getNonNullable, Nullable } from "@yamori-shared/react-utilities";
+import { createApi, skipToken } from "@reduxjs/toolkit/query/react";
+import { Endpoints, RequestParameters } from "@octokit/types";
 
-const COMMON_FETCH_PROPS = {
-  owner: "jgaik",
-  repo: "issued-recipes",
-};
+const octokit = new Octokit();
 
 type IssuedRecipeBodyInfo = Pick<
   IssuedRecipe,
@@ -56,11 +55,7 @@ function parseIssueBody(body: string): IssuedRecipeBodyInfo {
   };
 }
 
-function mapIssueToRecipe(issue: {
-  number: number;
-  title: string;
-  body?: string | null;
-}): IssuedRecipe {
+function mapIssueToRecipe(issue: GitHubIssue): IssuedRecipe {
   return {
     id: issue.number,
     title: issue.title,
@@ -68,33 +63,47 @@ function mapIssueToRecipe(issue: {
   };
 }
 
-let recipesCache: Record<number, IssuedRecipe | Promise<IssuedRecipe>> = {};
+export const api = createApi({
+  baseQuery: (args: [keyof Endpoints] | [keyof Endpoints, RequestParameters]) =>
+    octokit
+      .request(args[0], args[1])
+      .then(({ data }) => ({ data }))
+      .catch((error: RequestError) => ({ error })),
+  tagTypes: ["Issues"],
+  endpoints: (builder) => ({
+    getRecipes: builder.query<IssuedRecipe[], void>({
+      query: () => [
+        "GET /repos/{owner}/{repo}/issues",
+        {
+          owner: "jgaik",
+          repo: "issued-recipes",
+        },
+      ],
+      transformResponse: (result: GitHubIssue[]) =>
+        result.map(mapIssueToRecipe),
+      providesTags: (result) =>
+        result?.map(({ id }) => ({ type: "Issues", id })) ?? ["Issues"],
+      onQueryStarted: (_, { dispatch, queryFulfilled }) => {
+        queryFulfilled.then(({ data }) => {
+          data.map((recipe) =>
+            dispatch(api.util.upsertQueryData("getRecipe", recipe.id, recipe))
+          );
+        });
+      },
+    }),
+    getRecipe: builder.query<IssuedRecipe, number>({
+      query: (issueNumber) => [
+        "GET /repos/{owner}/{repo}/issues/{issue_number}",
+        {
+          owner: "jgaik",
+          repo: "issued-recipes",
+          issue_number: issueNumber,
+        },
+      ],
+      transformResponse: mapIssueToRecipe,
+      providesTags: (_, __, id) => [{ type: "Issues", id }],
+    }),
+  }),
+});
 
-export async function getRecipes() {
-  const issuedRecipes = await request(
-    "GET /repos/{owner}/{repo}/issues",
-    COMMON_FETCH_PROPS
-  ).then(({ data }) => data.map(mapIssueToRecipe));
-
-  recipesCache = Object.fromEntries(
-    issuedRecipes.map((recipe) => [recipe.id, recipe])
-  );
-
-  return issuedRecipes;
-}
-
-export async function getRecipe(id: number) {
-  if (recipesCache[id]) return recipesCache[id];
-
-  const issuedRecipe = request(
-    "GET /repos/{owner}/{repo}/issues/{issue_number}",
-    {
-      ...COMMON_FETCH_PROPS,
-      issue_number: id,
-    }
-  ).then(({ data }) => mapIssueToRecipe(data));
-
-  recipesCache[id] = issuedRecipe;
-
-  return issuedRecipe;
-}
+export { skipToken };

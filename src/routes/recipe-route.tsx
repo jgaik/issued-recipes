@@ -1,16 +1,16 @@
-import { Suspense } from "react";
 import { useParams } from "react-router";
-import { getRecipe } from "../api";
+import { api, skipToken } from "../api";
 import { Recipe } from "../components";
+import { Loading } from "@yamori-design/react-components";
 
 export const RecipeRoute: React.FC = () => {
   const { id } = useParams();
 
-  const resource = getRecipe(Number(id));
-
-  return (
-    <Suspense fallback={"Recipe loading"}>
-      <Recipe recipeResource={resource} />
-    </Suspense>
+  const { data: recipe, isLoading } = api.useGetRecipeQuery(
+    id ? parseInt(id) : skipToken
   );
+
+  if (isLoading || !recipe) return <Loading />;
+
+  return <Recipe {...recipe} />;
 };

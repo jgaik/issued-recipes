@@ -1,17 +1,22 @@
-import { use } from "react";
+import { useState } from "react";
 import { IssuedRecipe } from "../types";
-import { List } from "@yamori-design/react-components";
+import { Button, List, NumberInput } from "@yamori-design/react-components";
+import { CloseIcon } from "@yamori-design/icons";
+import "./recipe.scss";
 
-type RecipeProps = {
-  recipeResource: Promise<IssuedRecipe>;
-};
-
-export const Recipe: React.FC<RecipeProps> = ({ recipeResource }) => {
-  const { title, description, ingredients, steps, portions, picture } =
-    use(recipeResource);
+export const Recipe: React.FC<IssuedRecipe> = ({
+  title,
+  description,
+  ingredients,
+  steps,
+  portions,
+  picture,
+}) => {
+  const [currentPortions, setCurrentPortions] = useState(portions);
 
   return (
-    <article>
+    <article className="recipe">
+      <title>{`${title} • Issued Recipes `}</title>
       <h2>{title}</h2>
       {description && <p>{description}</p>}
       {picture && (
@@ -22,10 +27,34 @@ export const Recipe: React.FC<RecipeProps> = ({ recipeResource }) => {
         />
       )}
       <h3>Ingredients</h3>
-      <b>Portions: {portions}</b>
+      <label>
+        <b>Portions:</b>
+        <NumberInput
+          value={currentPortions}
+          onChange={(value) => setCurrentPortions(value ?? portions)}
+          size={4}
+          suffix={
+            <Button
+              className="reset-portions-button"
+              variant="text"
+              onClick={() => setCurrentPortions(portions)}
+              disabled={portions === currentPortions}
+            >
+              <CloseIcon />
+            </Button>
+          }
+          min={0}
+          step={portions}
+        />
+      </label>
       <List>
         {ingredients.map(({ name, amount, unit }) => (
-          <List.Item key={name} label={`${name}: ${amount} ${unit ?? ""}`} />
+          <List.Item
+            key={name}
+            label={`${name}: ${
+              Math.round(((amount * currentPortions) / portions) * 100) / 100
+            } ${unit ?? ""}`}
+          />
         ))}
       </List>
       <h3>Steps</h3>

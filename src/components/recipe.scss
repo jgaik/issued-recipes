@@ -1,0 +1,11 @@
+.recipe {
+  label {
+    align-items: center;
+    column-gap: var(--yamori-spacing-medium);
+    display: inline-flex;
+
+    .reset-portions-button:disabled {
+      visibility: hidden;
+    }
+  }
+}
