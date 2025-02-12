@@ -55,11 +55,22 @@ function parseIssueBody(body: string): IssuedRecipeBodyInfo {
   };
 }
 
-function mapIssueToRecipe(issue: GitHubIssue): IssuedRecipe {
+function mapIssueToRecipe({
+  title,
+  number: id,
+  body,
+}: GitHubIssue): IssuedRecipe {
+  const recipeBody = parseIssueBody(getNonNullable(body, "issue body"));
+
   return {
-    id: issue.number,
-    title: issue.title,
-    ...parseIssueBody(getNonNullable(issue.body, "issue body")),
+    id,
+    title,
+    ...recipeBody,
+    query: [title, recipeBody.description, recipeBody.category]
+      .join(" ")
+      .normalize("NFD")
+      .replace(/[\u0300-\u036f]/g, "")
+      .toLowerCase(),
   };
 }
 

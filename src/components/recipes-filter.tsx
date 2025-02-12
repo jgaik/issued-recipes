@@ -40,7 +40,7 @@ export const RecipesFilter: React.FC = () => {
     const timeoutId = setTimeout(
       () =>
         setSearchParams((prev) => {
-          prev.set("q", searchValue.trim().replace(/\s+/, " "));
+          prev.set("q", searchValue.trim().replace(/\s+/, " ").toLowerCase());
           return prev;
         }),
       500
@@ -73,13 +73,13 @@ export const RecipesFilter: React.FC = () => {
             placeholder="Select category"
             value={
               categories.length > 0 && filterValues.category.length > 0
-                ? filterValues.category.split(",")
+                ? filterValues.category.split(" ")
                 : []
             }
             onChange={(categories) =>
               setFilterValues((prev) => ({
                 ...prev,
-                category: categories.join(","),
+                category: categories.join(" "),
               }))
             }
           >

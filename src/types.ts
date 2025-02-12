@@ -22,6 +22,7 @@ export type IssuedRecipe = {
   ingredients: Array<RecipeIngredient>;
   steps: Array<RecipeStep>;
   picture: Nullable<string>;
+  query: string;
 };
 
 export type GitHubIssue =
