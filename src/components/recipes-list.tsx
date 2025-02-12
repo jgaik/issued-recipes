@@ -2,13 +2,13 @@ import React from "react";
 import { RecipeCard } from "./recipe-card";
 import { api } from "../api";
 import { Loading } from "@yamori-design/react-components";
-import "./recipe-list.scss";
+import "./recipes-list.scss";
 
 export const RecipesList: React.FC = () => {
   const { data: recipes, isLoading } = api.useGetRecipesQuery();
 
   return (
-    <ul className="recipe-list">
+    <ul className="recipes-list">
       {isLoading && (
         <li>
           <Loading />
