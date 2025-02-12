@@ -1,2 +1,7 @@
 .app {
+  &__content:has(.recipe-list) {
+    display: flex;
+    flex-direction: column;
+    padding: 0;
+  }
 }

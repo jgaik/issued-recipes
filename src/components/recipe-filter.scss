@@ -1,0 +1,23 @@
+.recipe-filter {
+  align-items: center;
+  display: grid;
+  gap: var(--yamori-spacing-medium);
+  grid-template-columns: 1fr auto;
+  padding: var(--yamori-spacing-large);
+
+  &__filter {
+    align-items: center;
+    display: grid;
+    gap: var(--yamori-spacing-medium);
+    grid-column: 1 / span 2;
+    grid-template-columns: auto 1fr;
+  }
+
+  &__buttons {
+    align-items: center;
+    display: flex;
+    gap: var(--yamori-spacing-medium);
+    grid-column: 2;
+    justify-content: end;
+  }
+}

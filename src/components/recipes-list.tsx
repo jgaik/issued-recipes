@@ -7,10 +7,13 @@ import "./recipe-list.scss";
 export const RecipesList: React.FC = () => {
   const { data: recipes, isLoading } = api.useGetRecipesQuery();
 
-  if (isLoading) return <Loading />;
-
   return (
     <ul className="recipe-list">
+      {isLoading && (
+        <li>
+          <Loading />
+        </li>
+      )}
       {recipes?.map((recipe) => (
         <li key={recipe.id}>
           <RecipeCard {...recipe} />

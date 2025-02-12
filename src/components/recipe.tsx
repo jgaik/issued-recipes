@@ -47,7 +47,7 @@ export const Recipe: React.FC<IssuedRecipe> = ({
           step={portions}
         />
       </label>
-      <List>
+      <List bulleted>
         {ingredients.map(({ name, amount, unit }) => (
           <List.Item
             key={name}

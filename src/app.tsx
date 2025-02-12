@@ -10,6 +10,7 @@ export const App: React.FC = () => {
 
   return (
     <NavigationBarLayout
+      className="app"
       links={[
         {
           children: "Recipes",

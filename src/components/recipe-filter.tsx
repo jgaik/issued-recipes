@@ -3,76 +3,125 @@ import {
   MultiSelect,
   SearchInput,
 } from "@yamori-design/react-components";
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useSearchParams } from "react-router";
 import { useAppSelector } from "../store";
+import { FilterIcon } from "@yamori-design/icons";
+import { BemClassNamesCreator } from "@yamori-shared/react-utilities";
+import "./recipe-filter.scss";
 
 export const RecipeFilter: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const categories = useAppSelector((state) => state.data.categories);
 
+  const [searchValue, setSearchValue] = useState(searchParams.get("q") ?? "");
+  const [showFilter, setShowFilter] = useState(false);
   const [filterValues, setFilterValues] = useState({
-    q: searchParams.get("q") ?? "",
     category: decodeURIComponent(searchParams.get("category") ?? ""),
-  });
+  } satisfies Record<string, string>);
+
+  const bemClassNames = BemClassNamesCreator.create(
+    "recipe-filter",
+    undefined,
+    "filter",
+    "buttons"
+  );
+
+  useEffect(() => {
+    if (!searchValue) {
+      setSearchParams((prev) => {
+        prev.delete("q");
+        return prev;
+      });
+
+      return;
+    }
+
+    const timeoutId = setTimeout(
+      () =>
+        setSearchParams((prev) => {
+          prev.set("q", searchValue.trim().replace(/\s+/, " "));
+          return prev;
+        }),
+      500
+    );
+
+    return () => {
+      clearTimeout(timeoutId);
+    };
+  }, [searchValue, setSearchParams]);
 
   return (
-    <div>
+    <div className={bemClassNames["recipe-filter"]}>
       <SearchInput
         placeholder="Search"
-        value={filterValues.q}
-        onChange={(q) => setFilterValues((prev) => ({ ...prev, q }))}
+        value={searchValue}
+        onChange={setSearchValue}
       />
-      <MultiSelect
-        value={
-          categories.length > 0 && filterValues.category.length > 0
-            ? filterValues.category.split(",")
-            : []
-        }
-        onChange={(categories) =>
-          setFilterValues((prev) => ({
-            ...prev,
-            category: categories.join(","),
-          }))
-        }
-      >
-        {categories.map((category) => (
-          <MultiSelect.Option key={category} value={category}>
-            {category}
-          </MultiSelect.Option>
-        ))}
-      </MultiSelect>
       <Button
-        onClick={() =>
-          setSearchParams((prev) => {
-            Object.entries(filterValues).forEach(([key, val]) => {
-              if (val) prev.set(key, val);
-            });
-
-            return prev;
-          })
-        }
+        aria-expanded={showFilter}
+        aria-controls="filter"
+        onClick={() => setShowFilter(!showFilter)}
       >
-        Apply Filter
+        <FilterIcon />
       </Button>
-      <Button
-        variant="secondary"
-        onClick={() => {
-          setSearchParams((prev) => {
-            Object.keys(filterValues).forEach((key) => {
-              prev.delete(key);
-            });
-            return prev;
-          });
-          setFilterValues({
-            q: "",
-            category: "",
-          });
-        }}
-        disabled={!Object.values(filterValues).some(Boolean)}
-      >
-        Clear Filter
-      </Button>
+      {showFilter && (
+        <div className={bemClassNames["filter"]} id="filter">
+          <label htmlFor="category">Category: </label>
+          <MultiSelect
+            id="category"
+            placeholder="Select category"
+            value={
+              categories.length > 0 && filterValues.category.length > 0
+                ? filterValues.category.split(",")
+                : []
+            }
+            onChange={(categories) =>
+              setFilterValues((prev) => ({
+                ...prev,
+                category: categories.join(","),
+              }))
+            }
+          >
+            {categories.map((category) => (
+              <MultiSelect.Option key={category} value={category}>
+                {category}
+              </MultiSelect.Option>
+            ))}
+          </MultiSelect>
+          <div className={bemClassNames["buttons"]}>
+            <Button
+              onClick={() => {
+                setSearchParams((prev) => {
+                  Object.entries(filterValues).forEach(([key, val]) => {
+                    prev.set(key, val);
+                  });
+                  return prev;
+                });
+              }}
+            >
+              Apply
+            </Button>
+            <Button
+              variant="secondary"
+              onClick={() => {
+                setSearchParams((prev) => {
+                  Object.keys(filterValues).forEach((key) => {
+                    prev.delete(key);
+                  });
+                  return prev;
+                });
+                setFilterValues({
+                  category: "",
+                });
+              }}
+              disabled={!Object.values(filterValues).some(Boolean)}
+            >
+              Clear
+            </Button>
+          </div>
+        </div>
+      )}
     </div>
   );
 };

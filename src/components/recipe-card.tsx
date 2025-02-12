@@ -20,7 +20,7 @@ export const RecipeCard: React.FC<IssuedRecipe> = ({
       }}
       role="presentation"
       header={
-        <Link aria-hidden ref={linkRef} to={id.toString()}>
+        <Link ref={linkRef} to={id.toString()}>
           {title}
         </Link>
       }
