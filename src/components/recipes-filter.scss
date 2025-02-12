@@ -2,7 +2,7 @@
   align-items: center;
   display: grid;
   gap: var(--yamori-spacing-medium);
-  grid-template-columns: 1fr auto;
+  grid-template-columns: minmax(0, 1fr) auto;
   padding: var(--yamori-spacing-large);
 
   &__filter {
@@ -10,7 +10,7 @@
     display: grid;
     gap: var(--yamori-spacing-medium);
     grid-column: 1 / span 2;
-    grid-template-columns: auto 1fr;
+    grid-template-columns: auto minmax(0, 1fr);
   }
 
   &__buttons {
