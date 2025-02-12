@@ -8,9 +8,9 @@ import { useSearchParams } from "react-router";
 import { useAppSelector } from "../store";
 import { FilterIcon } from "@yamori-design/icons";
 import { BemClassNamesCreator } from "@yamori-shared/react-utilities";
-import "./recipe-filter.scss";
+import "./recipes-filter.scss";
 
-export const RecipeFilter: React.FC = () => {
+export const RecipesFilter: React.FC = () => {
   const [searchParams, setSearchParams] = useSearchParams();
   const categories = useAppSelector((state) => state.data.categories);
 
@@ -21,7 +21,7 @@ export const RecipeFilter: React.FC = () => {
   } satisfies Record<string, string>);
 
   const bemClassNames = BemClassNamesCreator.create(
-    "recipe-filter",
+    "recipes-filter",
     undefined,
     "filter",
     "buttons"
@@ -52,7 +52,7 @@ export const RecipeFilter: React.FC = () => {
   }, [searchValue, setSearchParams]);
 
   return (
-    <div className={bemClassNames["recipe-filter"]}>
+    <div className={bemClassNames["recipes-filter"]}>
       <SearchInput
         placeholder="Search"
         value={searchValue}

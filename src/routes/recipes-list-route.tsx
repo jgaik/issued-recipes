@@ -1,10 +1,10 @@
-import { RecipeFilter, RecipesList } from "../components";
+import { RecipesFilter, RecipesList } from "../components";
 
 export const RecipesListRoute: React.FC = () => {
   return (
     <>
       <title>Issued Recipes</title>
-      <RecipeFilter />
+      <RecipesFilter />
       <RecipesList />
     </>
   );
