@@ -1,7 +1,9 @@
-import { useState } from "react";
+import { ComponentRef, useMemo, useRef } from "react";
 import { IssuedRecipe } from "../types";
 import { Button, List, NumberInput } from "@yamori-design/react-components";
 import { CloseIcon } from "@yamori-design/icons";
+import { useSearchParams } from "react-router";
+import { isNil } from "@yamori-shared/react-utilities";
 import "./recipe.scss";
 
 export const Recipe: React.FC<IssuedRecipe> = ({
@@ -12,7 +14,15 @@ export const Recipe: React.FC<IssuedRecipe> = ({
   portions,
   picture,
 }) => {
-  const [currentPortions, setCurrentPortions] = useState(portions);
+  const [searchParams, setSearchParams] = useSearchParams();
+  const numberInputRef = useRef<ComponentRef<typeof NumberInput>>(null);
+
+  const currentPortions = useMemo(() => {
+    const paramsPortions = searchParams.get("portions");
+
+    if (paramsPortions) return parseFloat(paramsPortions);
+    return portions;
+  }, [portions, searchParams]);
 
   return (
     <article className="recipe">
@@ -27,25 +37,35 @@ export const Recipe: React.FC<IssuedRecipe> = ({
         />
       )}
       <h3>Ingredients</h3>
-      <label>
+      <label className="recipe__portions">
         <b>Portions:</b>
         <NumberInput
+          ref={numberInputRef}
           value={currentPortions}
-          onChange={(value) => setCurrentPortions(value ?? portions)}
+          onChange={(value) => {
+            const nextParams = new URLSearchParams();
+            if (!isNil(value) && value !== portions) {
+              nextParams.set("portions", value.toString());
+            }
+            setSearchParams(nextParams);
+          }}
           size={4}
-          suffix={
-            <Button
-              className="reset-portions-button"
-              variant="text"
-              onClick={() => setCurrentPortions(portions)}
-              disabled={portions === currentPortions}
-            >
-              <CloseIcon />
-            </Button>
-          }
           min={0}
           step={portions}
         />
+        <Button
+          aria-label="Reset portions"
+          className="recipe__reset-portions"
+          variant="text"
+          onClick={() => {
+            setSearchParams(new URLSearchParams());
+            numberInputRef.current?.focus();
+          }}
+          disabled={portions === currentPortions}
+          title="Reset"
+        >
+          <CloseIcon />
+        </Button>
       </label>
       <List bulleted>
         {ingredients.map(({ name, amount, unit }) => (
