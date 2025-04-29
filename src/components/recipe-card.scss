@@ -3,4 +3,11 @@
     color: inherit;
     text-decoration: unset;
   }
+
+  &__image {
+    img {
+      width: 100%;
+      vertical-align: middle;
+    }
+  }
 }
