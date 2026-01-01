@@ -47,7 +47,7 @@ export const Recipe: React.FC<IssuedRecipe> = ({
             if (!isNil(value) && value !== portions) {
               nextParams.set("portions", value.toString());
             }
-            setSearchParams(nextParams);
+            setSearchParams(nextParams, { replace: true });
           }}
           size={4}
           min={0}
@@ -58,7 +58,7 @@ export const Recipe: React.FC<IssuedRecipe> = ({
           className="recipe__reset-portions"
           variant="text"
           onClick={() => {
-            setSearchParams(new URLSearchParams());
+            setSearchParams(new URLSearchParams(), { replace: true });
             numberInputRef.current?.focus();
           }}
           disabled={portions === currentPortions}
