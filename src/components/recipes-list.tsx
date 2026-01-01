@@ -2,7 +2,7 @@ import React, { useMemo } from "react";
 import { useSearchParams } from "react-router";
 import { RecipeCard } from "./recipe-card";
 import { api } from "../api";
-import { Loading } from "@yamori-design/react-components";
+import { List, Loading } from "@yamori-design/react-components";
 import "./recipes-list.scss";
 
 export const RecipesList: React.FC = () => {
@@ -26,17 +26,15 @@ export const RecipesList: React.FC = () => {
   }, [recipes, searchParams]);
 
   return (
-    <ul className="recipes-list">
-      {isLoading && (
-        <li>
-          <Loading />
-        </li>
-      )}
+    <List>
+      {isLoading && <List.Item label={<Loading />} />}
       {filteredRecipes?.map((recipe) => (
-        <li key={recipe.id}>
-          <RecipeCard {...recipe} />
-        </li>
+        <List.Item
+          className="recipes-list-item"
+          key={recipe.id}
+          label={<RecipeCard {...recipe} />}
+        />
       ))}
-    </ul>
+    </List>
   );
 };

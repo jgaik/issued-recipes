@@ -24,7 +24,12 @@ export const RecipeCard: React.FC<IssuedRecipe> = ({
           {title}
         </Link>
       }
-      image={picture ? <img src={picture} alt={title} /> : null}
+      image={
+        <img
+          src={picture ?? `https://placehold.co/100?text=${title.match(/\w/)}`}
+          alt={title}
+        />
+      }
     >
       {description}
     </Card>
