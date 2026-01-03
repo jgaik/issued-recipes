@@ -13,9 +13,9 @@
   "dependencies": {
     "@octokit/types": "^14.1.0",
     "@reduxjs/toolkit": "^2.8.2",
-    "@yamori-design/icons": "^1.9.0",
-    "@yamori-design/react-components": "^2.14.4",
-    "@yamori-design/styles": "^2.10.1",
+    "@yamori-design/icons": "^1.9.1",
+    "@yamori-design/react-components": "^2.14.5",
+    "@yamori-design/styles": "^2.10.2",
     "@yamori-shared/react-utilities": "^1.9.4",
     "octokit": "^5.0.3",
     "react": "^19.1.1",
